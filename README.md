@@ -1,59 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Delivery Errand Service
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive delivery and errand service platform with separate backend API and mobile applications.
 
-## About Laravel
+## Project Structure
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```
+delivery-errand-service/
+├── backend/           # Laravel API Backend
+│   ├── database/      # Database files, migrations, seeders
+│   │   └── database.sqlite  # SQLite database file
+│   └── ...           # Other Laravel files
+├── mobile/           # API documentation and testing tools
+├── database/         # Legacy folder (can be deleted after confirming backend works)
+├── README.md         # This file
+└── .git/            # Git repository
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Note:** There are two `database/` folders due to the project reorganization. The correct database files are now in `backend/database/`. The root `database/` folder contains a duplicate SQLite file and can be safely deleted once you've confirmed the backend is working properly.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Backend (Laravel API)
 
-## Learning Laravel
+The backend is a Laravel application that provides REST API endpoints for the mobile application.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Setup Instructions
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Navigate to backend directory:**
+   ```bash
+   cd backend
+   ```
 
-## Laravel Sponsors
+2. **Install PHP dependencies:**
+   ```bash
+   composer install
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. **Install Node.js dependencies:**
+   ```bash
+   npm install
+   ```
 
-### Premium Partners
+4. **Environment Configuration:**
+   ```bash
+   cp .env.example .env
+   ```
+   Update the `.env` file with your database credentials and other settings.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. **Generate application key:**
+   ```bash
+   php artisan key:generate
+   ```
+
+6. **Run database migrations:**
+   ```bash
+   php artisan migrate
+   ```
+
+7. **Seed the database with test users:**
+   ```bash
+   php artisan db:seed
+   ```
+
+8. **Start the development server:**
+   ```bash
+   php artisan serve
+   ```
+
+The API will be available at `http://localhost:8000`
+
+### Test Users Created
+
+The seeder creates the following test users:
+
+- **Admin:** admin@example.com / admin1234
+- **Customers:**
+  - test@example.com / password123
+  - john@example.com / john1234
+  - jane@example.com / jane1234
+- **Vendors:**
+  - vendor@example.com / vendor1234
+  - pizza@example.com / pizza1234
+  - burgers@example.com / burgers1234
+- **Riders:**
+  - rider@example.com / rider1234
+  - tom@example.com / tom1234
+  - sarah@example.com / sarah1234
+
+## Mobile App (API Consumption)
+
+The mobile folder contains API documentation and testing tools for the mobile development team:
+
+- **API Documentation** (`mobile/API_DOCUMENTATION.md`) - Complete endpoint reference
+- **Postman Collection** (`mobile/Delivery_Errand_Service_API.postman_collection.json`) - Import into Postman for testing
+- **HTML Test Page** (`mobile/api_test.html`) - Test API calls directly in browser
+- **Test Users** - Pre-seeded accounts for testing different user roles
+
+The mobile team can consume the backend API without needing to set up any mobile development framework.
+
+### Authentication
+- `POST /api/login` - User login
+- `POST /api/register` - User registration
+- `POST /api/logout` - User logout
+
+### User Management
+- `GET /api/user` - Get current user profile
+- `PUT /api/user` - Update user profile
+
+### Orders
+- `GET /api/orders` - Get user orders
+- `POST /api/orders` - Create new order
+- `GET /api/orders/{id}` - Get specific order
+- `PUT /api/orders/{id}` - Update order status
+
+### Vendors
+- `GET /api/vendors` - Get all vendors
+- `GET /api/vendors/{id}` - Get vendor details
+- `GET /api/vendors/{id}/menu` - Get vendor menu
+
+## Development Workflow
+
+1. **Backend Development:**
+   - Make changes in `backend/` directory
+   - Test API endpoints using Postman or similar tools
+   - Run `php artisan test` for unit tests
+
+2. **Mobile Development:**
+   - Make changes in `mobile/` directory
+   - Test on emulator/simulator
+   - Use React Native Debugger for debugging
+
+3. **Version Control:**
+   - Both backend and mobile code are in the same repository
+   - Use feature branches for new features
+   - Keep backend and mobile changes separate when possible
+
+## Technologies Used
+
+### Backend
+- **Laravel 11** - PHP Framework
+- **MySQL/SQLite** - Database
+- **Sanctum** - API Authentication
+- **Composer** - PHP Dependency Management
+
+### Mobile (API Consumption)
+- **REST API** - JSON-based API endpoints
+- **Bearer Token Authentication** - JWT-style authentication
+- **Postman** - API testing and documentation
+- **HTML/JavaScript** - Simple testing interface
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License.
